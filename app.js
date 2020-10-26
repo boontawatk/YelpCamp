@@ -6,7 +6,7 @@ const Campground = require("./models/campground")
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
     useNewUrlParser: true,
-    useCreateIndex: true,
+    useCreateIndex: true,//I have no idea why we need this
     useUnifiedTopology: true
   })
   .then(() => console.log("Connected to yelpCamp database!"))
@@ -20,12 +20,6 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", (req, res) => {
   res.render("home");
 });
-
-app.get("/makecampground",async (req,res)=>{
-    const camp= new Campground({title: "my backyard", description:'Cheap Camping'});
-    await camp.save();
-    res.send(camp);
-})
 
 app.listen(3000, () => {
   console.log("Server on Port 3000");
