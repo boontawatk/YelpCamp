@@ -7,9 +7,10 @@
 </head>
 <body>
     <h1>Campground Page</h1>
+    <a href="/campgrounds/new">create new campground</a>
     <ul>
         <% campgrounds.forEach((campground)=>{ %>
-            <li><a href=<%= campground._id %> ><%= campground.title %></a></li>
+            <li><a href="/campgrounds/<%= campground._id %>" ><%= campground.title %></a></li>
         <% }) %>
     </ul>
 </body>
