@@ -1,24 +1,31 @@
-const express = require("express"),
-  mongoose = require("mongoose"),
-  path = require("path");
-const app = express();
-
-app.set("view engine", "ejs");
-
-//set view directory in views folder(the second views)
-app.set("views", path.join(__dirname, "views"));
+const express = require("express");
+const path = require("path");
+const mongoose = require("mongoose");
+const Campground = require("./models/campground")
 
 mongoose
-  .connect("mongodb://localhost/yelpCamp", {
+  .connect("mongodb://localhost:27017/yelpCamp", {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
   })
   .then(() => console.log("Connected to yelpCamp database!"))
   .catch((error) => console.log(error.message));
 
+const app = express();
+app.set("view engine", "ejs");
+//set view directory in views folder(the second views)
+app.set("views", path.join(__dirname, "views"));
+
 app.get("/", (req, res) => {
   res.render("home");
 });
+
+app.get("/makecampground",async (req,res)=>{
+    const camp= new Campground({title: "my backyard", description:'Cheap Camping'});
+    await camp.save();
+    res.send(camp);
+})
 
 app.listen(3000, () => {
   console.log("Server on Port 3000");
