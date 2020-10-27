@@ -51,6 +51,14 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
   res.render("campgrounds/edit", { campground });
 });
 
+app.put("/campgrounds/:id", async (req,res)=>{
+  const campground = await Campground.findByIdAndUpdate(req.params.id,{
+    title: req.body.campground.title,
+    location: req.body.campground.location
+  });
+  res.redirect(`/campgrounds/${req.params.id}`);
+});
+
 app.listen(3000, () => {
   console.log("Server on Port 3000");
 });
