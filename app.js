@@ -1,7 +1,7 @@
 const express = require("express");
-const path = require("path");
+const path = require("path"); //built in with node
 const mongoose = require("mongoose");
-const engine = require("ejs-mate");
+const ejsMate = require("ejs-mate");
 const Campground = require("./models/campground");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
@@ -18,10 +18,14 @@ mongoose
 const app = express();
 app.set("view engine", "ejs");
 //set view directory in views folder(the second views)
+//__dirname -> means= where this file is located
 app.set("views", path.join(__dirname, "views"));
+//use for custom css
+app.use(express.static(__dirname + '/views'));
 app.use(bodyParser.urlencoded({ extended: true }));
 //can use other word instead_method -> _method is parameter in query string
 app.use(methodOverride("_method"));
+app.engine('ejs',ejsMate);
 
 app.get("/", (req, res) => {
   res.render("home");
