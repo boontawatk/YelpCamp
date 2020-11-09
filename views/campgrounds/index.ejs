@@ -1,9 +1,12 @@
 <% layout('layouts/boilerplate') %>
 <h1>Campground Page</h1>
-<ul>
   <% campgrounds.forEach((campground)=>{ %>
-  <li>
-    <a href="/campgrounds/<%= campground._id %>"><%= campground.title %></a>
-  </li>
+  <div class="border border-1 p-4 m-4 rounded home-content row align-items-center">
+  <img class="w-25 border p-0 rounded col" src="<%= campground.image %>" alt="" />
+  <span class="col">
+    <h3><%= campground.title %></h3>
+    <p><%= campground.description %></p>
+    <a class="btn btn-secondary border" href="/campgrounds/<%= campground._id %>">View Campground</a>
+  </span>
+  </div>
   <% }) %>
-</ul>

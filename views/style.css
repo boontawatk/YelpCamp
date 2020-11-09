@@ -4,3 +4,7 @@
 .nav-link:hover {
     background-color: rgba(0, 0, 0, 30%);
 }
+
+.home-content {
+    background-color: #fffdf7;
+}

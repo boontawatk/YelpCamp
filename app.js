@@ -59,7 +59,7 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
 app.put("/campgrounds/:id", async (req,res)=>{
   const campground = await Campground.findByIdAndUpdate(req.params.id,{
     title: req.body.campground.title,
-    location: req.body.campground.location
+    location: req.body.campground.location,
   });
   res.redirect(`/campgrounds/${campground._id}`);
 });
