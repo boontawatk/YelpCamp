@@ -5,6 +5,7 @@ const ejsMate = require("ejs-mate");
 const Campground = require("./models/campground");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
+const { nextTick } = require("process");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -40,8 +41,8 @@ app.get("/campgrounds/new", async (req, res) => {
   res.render("campgrounds/new");
 });
 
-app.post("/campgrounds", async (req, res) => {
-  const campground = new Campground(req.body.campground);
+app.post("/campgrounds", async (req, res, next) => {
+    const campground = new Campground(req.body.campground);
   await campground.save();
   res.redirect(`campgrounds/${campground._id}`);
 });
@@ -57,10 +58,7 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
 });
 
 app.put("/campgrounds/:id", async (req,res)=>{
-  const campground = await Campground.findByIdAndUpdate(req.params.id,{
-    title: req.body.campground.title,
-    location: req.body.campground.location,
-  });
+  const campground = await Campground.findByIdAndUpdate(req.params.id,req.body.campground);
   res.redirect(`/campgrounds/${campground._id}`);
 });
 
@@ -68,6 +66,8 @@ app.delete("/campgrounds/:id", async (req,res)=>{
   await Campground.findByIdAndRemove(req.params.id);
   res.redirect("/campgrounds/");
 })
+
+
 
 app.listen(3000, () => {
   console.log("Server on Port 3000");

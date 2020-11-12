@@ -1,14 +1,64 @@
 <% layout('layouts/boilerplate') %>
-<h1>New</h1>
-<form action="/campgrounds" method="POST">
-  <label for="title">title</label>
-  <input type="text" id="title" name="campground[title]" placeholder="title" />
-  <label for="location">location</label>
-  <input
-    type="text"
-    id="location"
-    name="campground[location]"
-    placeholder="location"
-  />
-  <input type="submit" />
-</form>
+<h1 class="text-center">New</h1>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+      <form class="validated-form" action="/campgrounds" method="POST" novalidate>
+      <div class="m-3">
+        <label class="form-label" for="title">Title</label>
+        <input class="form-control"
+          type="text"
+          id="title"
+          name="campground[title]"
+          placeholder="title"
+          required
+        />
+        <div class="valid-feedback">Well done!</div>
+      </div>
+      <div class="m-3">
+        <label class="form-label" for="image">Image URL</label>
+        <input class="form-control"
+          type="text"
+          id="image"
+          name="campground[image]"
+          placeholder="image"
+          required
+        />
+        <div class="valid-feedback">Well done!</div>
+      </div>
+      <div class="m-3">
+        <label class="form-label" for="price">Price</label>
+        <input class="form-control"
+          type="text"
+          id="price"
+          name="campground[price]"
+          placeholder="price"
+          required
+        />
+        <div class="valid-feedback">Well done!</div>
+      </div>
+      <div class="m-3">
+        <label class="form-label" for="description">Description</label>
+        <textarea class="form-control"
+          type="text"
+          id="description"
+          name="campground[description]"
+          placeholder="description"
+          required
+        ></textarea>
+        <div class="valid-feedback">Well done!</div>
+      </div>
+      <div class="m-3">
+        <label class="form-label" for="location">Location</label>
+        <input class="form-control"
+          type="text"
+          id="location"
+          name="campground[location]"
+          placeholder="location"
+          required
+        />
+        <div class="valid-feedback">Well done!</div>
+      </div>
+      <input class="btn btn-primary m-3" value="Add Campground" type="submit" />
+    </form>
+  </div>
+</div>
