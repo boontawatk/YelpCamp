@@ -32,27 +32,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
-
-app.get(
-  "/campgrounds",
-  catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render("campgrounds/index", { campgrounds });
-  })
-);
-
-app.get("/campgrounds/new", async (req, res, next) => {
-  res.render("campgrounds/new");
-});
-
-app.post(
-  "/campgrounds",
-  catchAsync(async (req, res, next) => {
-    console.log(req.body);
-    // if (!req.body.campground)
+const validateCampground = (req,res,next)=>{
+  // if (!req.body.campground)
     //   throw new ExpressError("Invalid Campground Data", 400);
     const campgroundSchema = Joi.object({
       campground: Joi.object({
@@ -71,6 +52,29 @@ app.post(
       const msg = error.details.map((el) => el.message).join(",");
       throw new ExpressError(msg, 400);
     }
+    else{next();}
+}
+
+app.get("/", (req, res) => {
+  res.render("home");
+});
+
+app.get(
+  "/campgrounds",
+  catchAsync(async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render("campgrounds/index", { campgrounds });
+  })
+);
+
+app.get("/campgrounds/new", async (req, res, next) => {
+  res.render("campgrounds/new");
+});
+
+app.post(
+  "/campgrounds",
+  validateCampground,
+  catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`campgrounds/${campground._id}`);
@@ -95,6 +99,7 @@ app.get(
 
 app.put(
   "/campgrounds/:id",
+  validateCampground,
   catchAsync(async (req, res) => {
     const campground = await Campground.findByIdAndUpdate(
       req.params.id,
