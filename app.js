@@ -9,6 +9,7 @@ const { nextTick } = require("process");
 const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const Joi = require("joi");
+const validateSchema = require("./models/validateSchema");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -33,21 +34,10 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 const validateCampground = (req,res,next)=>{
-  // if (!req.body.campground)
-    //   throw new ExpressError("Invalid Campground Data", 400);
-    const campgroundSchema = Joi.object({
-      campground: Joi.object({
-        title: Joi.string().required(),
-        price: Joi.number().min(0).required(),
-        image: Joi.string().required(),
-        description: Joi.string().required(),
-        location: Joi.string().required(),
-      }).required(),
-    });
     //what's inside is what we want to pass data for validation
     //we want to pass req.body -> so we want to validate campground too
     //if we want just validate what's inside it we can pass req.body.campground and what's inside for schema
-    const { error } = campgroundSchema.validate(req.body);
+    const { error } = validateSchema.Campground.validate(req.body);
     if (error) {
       const msg = error.details.map((el) => el.message).join(",");
       throw new ExpressError(msg, 400);
