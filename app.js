@@ -10,6 +10,7 @@ const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const Joi = require("joi");
 const validateSchema = require("./models/validateSchema");
+const Review = require("./models/review");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -106,6 +107,15 @@ app.delete(
     res.redirect("/campgrounds/");
   })
 );
+
+app.post('/campgrounds/:id/reviews',catchAsync(async(req,res)=>{
+  const campground = await Campground.findById(req.params.id);
+  const review = new Review(req.body.review);
+  campground.reviews.push(review); //Objectid was create already when new model 
+  await review.save();
+  await campground.save();
+  res.redirect(`/campgrounds/${req.params.id}`);
+}))
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page not found", 404));

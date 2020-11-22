@@ -9,14 +9,14 @@
   <button class="btn btn-danger">Delete</button>
 </form>
 <h2 class="mt-3">Leave a review</h2>
-<form action="">
+<form action="/campgrounds/<%= campground._id %>/reviews" method="POST">
   <div class="mb-3">
     <label class="form-label" for="rating">Rating :</label>
-    <input class="form-range" type="range" name="reviews[rating]" min="0" max="5" id="rating">
+    <input class="form-range" type="range" name="review[rating]" min="0" max="5" id="rating">
   </div>
   <div class="mb-3">
     <label class="form-label" for="reviewbody">Reviews :</label>
-  <textarea class="form-control" name="reviews[body]" id="reviewbody" cols="30" rows="3"></textarea>
+  <textarea class="form-control" name="review[body]" id="reviewbody" cols="30" rows="3"></textarea>
   </div>
   <button class="btn btn-success">Submit</button>
 </form>
