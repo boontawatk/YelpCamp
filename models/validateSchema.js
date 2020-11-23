@@ -9,3 +9,10 @@ module.exports.Campground = Joi.object({
       location: Joi.string().required(),
     }).required(),
   });
+
+  module.exports.Review = Joi.object({
+    review: Joi.object({
+      body: Joi.string().required(),
+      rating: Joi.number().min(1).max(5).required()
+    }).required()
+  })

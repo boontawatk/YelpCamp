@@ -46,6 +46,18 @@ const validateCampground = (req,res,next)=>{
     else{next();}
 }
 
+const validateReview = (req,res,next)=>{
+  //what's inside is what we want to pass data for validation
+  //we want to pass req.body -> so we want to validate campground too
+  //if we want just validate what's inside it we can pass req.body.campground and what's inside for schema
+  const { error } = validateSchema.Review.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  }
+  else{next();}
+}
+
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -108,7 +120,7 @@ app.delete(
   })
 );
 
-app.post('/campgrounds/:id/reviews',catchAsync(async(req,res)=>{
+app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
   const campground = await Campground.findById(req.params.id);
   const review = new Review(req.body.review);
   campground.reviews.push(review); //Objectid was create already when new model 
