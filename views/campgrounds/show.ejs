@@ -8,14 +8,31 @@
   >edit</a
 >
 <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-  <button class="btn btn-danger">Delete</button>
+  <button class="mb-2 btn btn-danger">Delete</button>
 </form>
-<h3>Review</h3>
-<ul>
-<% campground.reviews.forEach((review)=>{ %>
-  <li><%= review.body %> rating: <%= review.rating %></li>
-<% }) %>
-</ul>
+
+<!-- show review -->
+<% if(campground.reviews.length){ %>
+<% let i=1 %>
+<div class="card">
+  <ul class="list-group list-group-flush">
+    
+    <% campground.reviews.forEach((review)=>{ %>
+    <li class="list-group-item">
+      <h5>user<%= i %>
+      <% for(let j=0;j< review.rating; j ++)  { %>
+        <i class="text-warning fas fa-star"></i>
+      <% } %>
+      <% for(let j=0;j< 5-review.rating; j ++)  { %>
+        <i class="text-warning far fa-star"></i>
+      <% } %>
+    </h5>
+      <p><%= review.body %></p>
+      <% i++ %>
+      <% }) %></li>
+    </ul>
+</div>
+<% } %>
 <h3 class="mt-3">Leave a review</h3>
 <form
   class="validated-form"
