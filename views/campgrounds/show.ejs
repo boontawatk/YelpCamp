@@ -28,6 +28,9 @@
       <% } %>
     </h5>
       <p><%= review.body %></p>
+      <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-danger">Delete Button</button>
+      </form>
       <% i++ %>
       <% }) %></li>
     </ul>

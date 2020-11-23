@@ -121,6 +121,18 @@ app.delete(
   })
 );
 
+app.delete(
+  "/campgrounds/:id/reviews/:reviewId",
+  catchAsync(async (req, res) => {
+    //we need to remove reviewId from relation in campground and update
+    //mongoose has this method to do something like this (delete array in mongoose)
+    //this line is new ***
+    await Campground.findByIdAndUpdate(req.params.id,{ $pull : {reviews: req.params.reviewId}});
+    await Review.findByIdAndRemove(req.params.reviewId);
+    res.redirect(`/campgrounds/${req.params.id}`);
+  })
+);
+
 app.post('/campgrounds/:id/reviews',validateReview,catchAsync(async(req,res)=>{
   const campground = await Campground.findById(req.params.id);
   const review = new Review(req.body.review);
