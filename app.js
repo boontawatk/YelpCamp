@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const ExpressError = require("./utils/ExpressError");
 const campgroundsRoutes = require("./routes/campgrounds");
+const reviewsRoutes = require("./routes/reviews");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -30,6 +31,7 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
 app.use("/campgrounds",campgroundsRoutes);
+app.use("/campgrounds/:id/reviews",reviewsRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
