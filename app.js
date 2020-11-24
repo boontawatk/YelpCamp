@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ExpressError = require("./utils/ExpressError");
 const campgroundsRoutes = require("./routes/campgrounds");
 const reviewsRoutes = require("./routes/reviews");
+const session = require("express-session");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -30,6 +31,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //can use other word instead_method -> _method is parameter in query string
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+
+const sessionConfig={
+  secret: 'juststringforthesecret',
+  resave: false,
+  //config more for cookie
+  saveUninitialized: true,
+  cookie:{
+    //more security
+    httpOnly: true,
+    expires: Date.now() + 1000*60*60*24*7, // 7 days
+    maxAge:1000*60*60*24*7
+  }
+}
+
+app.use(session(sessionConfig));
 
 app.use("/campgrounds",campgroundsRoutes);
 app.use("/campgrounds/:id/reviews",reviewsRoutes);
