@@ -13,6 +13,7 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true, //I have no idea why we need this
     useUnifiedTopology: true,
+    useFindAndModify:false
   })
   .then(() => console.log("Connected to yelpCamp database!"))
   .catch((error) => console.log(error.message));
@@ -23,7 +24,7 @@ app.set("view engine", "ejs");
 //__dirname -> means= where this file is located
 app.set("views", path.join(__dirname, "views"));
 //use for custom css
-app.use(express.static(__dirname + "/views"));
+app.use(express.static(path.join(__dirname + "/public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //can use other word instead_method -> _method is parameter in query string
