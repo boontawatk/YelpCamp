@@ -8,6 +8,7 @@ const ExpressError = require("./utils/ExpressError");
 const campgroundsRoutes = require("./routes/campgrounds");
 const reviewsRoutes = require("./routes/reviews");
 const session = require("express-session");
+const flash = require('connect-flash');
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -46,11 +47,18 @@ const sessionConfig={
 }
 
 app.use(session(sessionConfig));
+app.use(flash());
+app.use((req,res,next)=>{
+  //left is variable that we pass, right is key to our message
+  res.locals.success = req.flash("success");
+  next();
+})
 
 app.use("/campgrounds",campgroundsRoutes);
 app.use("/campgrounds/:id/reviews",reviewsRoutes);
 
 app.get("/", (req, res) => {
+
   res.render("home");
 });
 
