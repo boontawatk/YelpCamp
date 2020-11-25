@@ -51,6 +51,7 @@ app.use(flash());
 app.use((req,res,next)=>{
   //left is variable that we pass, right is key to our message
   res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
 })
 
