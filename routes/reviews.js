@@ -30,6 +30,7 @@ router.delete(
       $pull: { reviews: req.params.reviewId },
     });
     await Review.findByIdAndRemove(req.params.reviewId);
+    req.flash("success","SUCCESSFULLY DELETE REVIEW!!!");
     res.redirect(`/campgrounds/${req.params.id}`);
   })
 );
@@ -43,6 +44,7 @@ router.post(
     campground.reviews.push(review); //Objectid was create already when new model
     await review.save();
     await campground.save();
+    req.flash("success","SUCCESSFULLY REVIEW");
     res.redirect(`/campgrounds/${req.params.id}`);
   })
 );

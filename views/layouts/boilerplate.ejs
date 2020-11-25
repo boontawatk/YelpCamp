@@ -1,5 +1,4 @@
 <%- include("../partials/navbar") %>
-<div class="container"><%- body %></div>
-<p><%= success %></p>
+<div class="container"><%- include("../partials/flash") %><%- body %></div>
 <script src="/js/validateForm.js"></script>
 <%- include("../partials/footer") %>
