@@ -80,13 +80,6 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-//temp route for testing
-app.get("/fakeUser",async(req,res)=>{
-  const user = new User({email: 'aaa@gmail.com', username:"test"});
-  const newUser = await User.register(user, 'chicken');// create email username salted password, hashed password for us
-  res.send(newUser);
-});
-
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page not found", 404));
 });

@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const validateSchema = require("../models/validateSchema");
 const ExpressError = require("../utils/ExpressError");
 const router = express.Router();
-const {isLoggedIn} = require("../middleware");
+const { isLoggedIn } = require("../middleware");
 const validateCampground = (req, res, next) => {
   //what's inside is what we want to pass data for validation
   //we want to pass req.body -> so we want to validate campground too
@@ -26,7 +26,7 @@ router.get(
   })
 );
 
-router.get("/new", isLoggedIn,async (req, res, next) => {
+router.get("/new",isLoggedIn, async (req, res, next) => {
   res.render("campgrounds/new");
 });
 
@@ -37,31 +37,33 @@ router.post(
   catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
-    req.flash("success","SUCCESSFULLY MADE A NEW CAMPGROUND!!!");
+    req.flash("success", "SUCCESSFULLY MADE A NEW CAMPGROUND!!!");
     res.redirect(`campgrounds/${campground._id}`);
   })
 );
 
 router.get(
-  "/:id", isLoggedIn,
+  "/:id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate(
       "reviews"
     );
-      if(!campground){
-        req.flash("error","cannot find that campground!!!")
-        return res.redirect("/campgrounds");
-      }
+    if (!campground) {
+      req.flash("error", "cannot find that campground!!!");
+      return res.redirect("/campgrounds");
+    }
     res.render("campgrounds/show", { campground });
   })
 );
 
 router.get(
-  "/:id/edit", isLoggedIn,
+  "/:id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
-    if(!campground){
-      req.flash("error","cannot find that campground!!!")
+    if (!campground) {
+      req.flash("error", "cannot find that campground!!!");
       return res.redirect("/campgrounds");
     }
     res.render("campgrounds/edit", { campground });
@@ -77,7 +79,7 @@ router.put(
       req.params.id,
       req.body.campground
     );
-    req.flash("success","SUCCESSFULLY UPDATE CAMPGROUND!!!");
+    req.flash("success", "SUCCESSFULLY UPDATE CAMPGROUND!!!");
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -87,7 +89,7 @@ router.delete(
   isLoggedIn,
   catchAsync(async (req, res) => {
     await Campground.findByIdAndRemove(req.params.id);
-    req.flash("success","SUCCESSFULLY DELETE CAMPGROUND!!!");
+    req.flash("success", "SUCCESSFULLY DELETE CAMPGROUND!!!");
     res.redirect("/campgrounds/");
   })
 );
