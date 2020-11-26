@@ -4,11 +4,17 @@ const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
-const ExpressError = require("./utils/ExpressError");
-const campgroundsRoutes = require("./routes/campgrounds");
-const reviewsRoutes = require("./routes/reviews");
 const session = require("express-session");
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require("./models/user");
+//router
+const campgroundsRoutes = require("./routes/campgrounds");
+const reviewsRoutes = require("./routes/reviews");
+
+//custom function
+const ExpressError = require("./utils/ExpressError");
 
 mongoose
   .connect("mongodb://localhost:27017/yelpCamp", {
@@ -55,12 +61,28 @@ app.use((req,res,next)=>{
   next();
 })
 
+//passport
+app.use(passport.initialize());
+//passport.session need to be used after session(app.use(session())
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use("/campgrounds",campgroundsRoutes);
 app.use("/campgrounds/:id/reviews",reviewsRoutes);
 
 app.get("/", (req, res) => {
 
   res.render("home");
+});
+
+//temp route for testing
+app.get("/fakeUser",async(req,res)=>{
+  const user = new User({email: 'aaa@gmail.com', username:"test"});
+  const newUser = await User.register(user, 'chicken');// create email username salted password, hashed password for us
+  res.send(newUser);
 });
 
 app.all("*", (req, res, next) => {
