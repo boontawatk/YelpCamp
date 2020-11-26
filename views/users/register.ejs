@@ -1,0 +1,42 @@
+<% layout('layouts/boilerplate') %>
+<h1>Register</h1>
+<div class="row">
+    <div class="col-10 offset-1 col-sm-8 offset-sm-2 col-lg-4 offset-lg-4">
+        <form class="validated-form" action="/register" method="POST" novalidate>
+        <div class="m-3">
+          <label class="form-label" for="email">email</label>
+          <input class="form-control"
+            type="email"
+            id="email"
+            name="user[email]"
+            placeholder="email"
+            required
+          />
+          <div class="valid-feedback">Well done!</div>
+        </div>
+        <div class="m-3">
+          <label class="form-label" for="username">username</label>
+          <input class="form-control"
+            type="text"
+            id="username"
+            name="user[username]"
+            placeholder="username"
+            required
+          />
+          <div class="valid-feedback">Well done!</div>
+        </div>
+        <div class="m-3">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control"
+            type="password"
+            id="password"
+            name="user[password]"
+            placeholder="password"
+            required
+          />
+          <div class="valid-feedback">Well done!</div>
+        </div>
+        <input class="btn btn-primary m-3" value="Register" type="submit" />
+      </form>
+    </div>
+  </div>

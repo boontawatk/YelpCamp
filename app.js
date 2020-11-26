@@ -12,6 +12,7 @@ const User = require("./models/user");
 //router
 const campgroundsRoutes = require("./routes/campgrounds");
 const reviewsRoutes = require("./routes/reviews");
+const usersRoutes = require("./routes/users");
 
 //custom function
 const ExpressError = require("./utils/ExpressError");
@@ -72,6 +73,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use("/campgrounds",campgroundsRoutes);
 app.use("/campgrounds/:id/reviews",reviewsRoutes);
+app.use("/",usersRoutes);
 
 app.get("/", (req, res) => {
 
