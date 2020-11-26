@@ -2,9 +2,9 @@ const express = require("express");
 const Campground = require("../models/campground");
 const catchAsync = require("../utils/catchAsync");
 const validateSchema = require("../models/validateSchema");
-
+const ExpressError = require("../utils/ExpressError");
 const router = express.Router();
-
+const {isLoggedIn} = require("../middleware");
 const validateCampground = (req, res, next) => {
   //what's inside is what we want to pass data for validation
   //we want to pass req.body -> so we want to validate campground too
@@ -26,12 +26,13 @@ router.get(
   })
 );
 
-router.get("/new", async (req, res, next) => {
+router.get("/new", isLoggedIn,async (req, res, next) => {
   res.render("campgrounds/new");
 });
 
 router.post(
   "/",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body.campground);
@@ -42,7 +43,7 @@ router.post(
 );
 
 router.get(
-  "/:id",
+  "/:id", isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id).populate(
       "reviews"
@@ -56,7 +57,7 @@ router.get(
 );
 
 router.get(
-  "/:id/edit",
+  "/:id/edit", isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     if(!campground){
@@ -69,6 +70,7 @@ router.get(
 
 router.put(
   "/:id",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res) => {
     const campground = await Campground.findByIdAndUpdate(
@@ -82,6 +84,7 @@ router.put(
 
 router.delete(
   "/:id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     await Campground.findByIdAndRemove(req.params.id);
     req.flash("success","SUCCESSFULLY DELETE CAMPGROUND!!!");
