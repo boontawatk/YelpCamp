@@ -13,8 +13,11 @@ router.post("/register", catchAsync(async (req, res) => {
       const { email, username, password } = req.body.user;
   const user = new User({ email: email, username: username });
   const registeredUser = await User.register(user, password); // create email username salted password, hashed password for us
-  req.flash("success","Welcome to Yelp Camp");
-  res.redirect("/campgrounds");//.register will already save to mongoose for us
+  req.login(registeredUser,err=>{
+    if(err){ next(err)}
+    req.flash("success","Welcome to Yelp Camp");
+    res.redirect("/campgrounds");//.register will already save to mongoose for us
+  })
   }
   catch(error){
       req.flash("error", error.message);
